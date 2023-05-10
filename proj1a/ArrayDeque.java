@@ -1,6 +1,6 @@
-public class ArrayDeque<Item> {
-    private final class AList<Item> {
-        public Item[] items;
+public class ArrayDeque<T> {
+    private final class AList<T> {
+        public T[] items;
         public int head;
         public int tail;
         public int size;
@@ -10,7 +10,7 @@ public class ArrayDeque<Item> {
          * create an empty list.
          */
         public AList() {
-            items = (Item[]) new Object[max_size];
+            items = (T[]) new Object[max_size];
             tail = 0;
             head = 1;
             size = 0;
@@ -20,7 +20,7 @@ public class ArrayDeque<Item> {
          * resize the underlying array to the target capacity.
          */
         private void resize(int capacity) {
-            Item[] a = (Item[]) new Object[capacity];
+            T[] a = (T[]) new Object[capacity];
             if (head < tail) {
                 System.arraycopy(items, head, a, 0, size);
             } else {
@@ -35,7 +35,7 @@ public class ArrayDeque<Item> {
         /**
          * Inserts X into the back of the list.
          */
-        public void addLast(Item x) {
+        public void addLast(T x) {
             if (size == max_size) {
                 resize(size * 2);
                 max_size = size * 2;
@@ -45,7 +45,7 @@ public class ArrayDeque<Item> {
             size += 1;
         }
 
-        public void addFirst(Item x) {
+        public void addFirst(T x) {
             if (size == max_size) {
                 max_size = max_size * 2;
                 resize(max_size);
@@ -58,18 +58,18 @@ public class ArrayDeque<Item> {
         /**
          * Get the last item of the list.
          */
-        public Item getLast() {
+        public T getLast() {
             return items[tail];
         }
 
-        public Item getFirst() {
+        public T getFirst() {
             return items[head];
         }
 
         /**
          * Get the 'index'th item of the list.
          */
-        public Item get(int index) {
+        public T get(int index) {
             return items[(head + index) % max_size];
         }
 
@@ -83,16 +83,16 @@ public class ArrayDeque<Item> {
         /**
          * Remove the last item of the list.
          */
-        public Item removeLast() {
-            Item x = items[tail];
+        public T removeLast() {
+            T x = items[tail];
             items[tail] = null;
             size -= 1;
             tail = ((tail + max_size - 1) % max_size);
             return x;
         }
 
-        public Item removeFirst() {
-            Item x = items[head];
+        public T removeFirst() {
+            T x = items[head];
             items[head] = null;
             size -= 1;
             head = ((head + 1) % max_size);
@@ -141,36 +141,36 @@ public class ArrayDeque<Item> {
     /**
      * Add item to AD head.
      */
-    public void addFirst(Item it) {
+    public void addFirst(T it) {
         sentinel.addFirst(it);
         size += 1;
     }
 
-    public void addLast(Item it) {
+    public void addLast(T it) {
         sentinel.addLast(it);
         size += 1;
     }
 
-    public Item getFirst() {
-        return (Item) sentinel.getFirst();
+    public T getFirst() {
+        return (T) sentinel.getFirst();
     }
 
-    public Item getLast() {
-        return (Item) sentinel.getLast();
+    public T getLast() {
+        return (T) sentinel.getLast();
     }
 
-    public Item get(int index) {
-        return (Item) sentinel.get(index);
+    public T get(int index) {
+        return (T) sentinel.get(index);
     }
 
-    public Item removeFirst() {
+    public T removeFirst() {
         size -= 1;
-        return (Item) sentinel.removeFirst();
+        return (T) sentinel.removeFirst();
     }
 
-    public Item removeLast() {
+    public T removeLast() {
         size -= 1;
-        return (Item) sentinel.removeLast();
+        return (T) sentinel.removeLast();
     }
 
     public void printDeque() {
