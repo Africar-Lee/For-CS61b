@@ -153,8 +153,7 @@ public class LinkedListDeque<T> {
         if (p == sentinel) return null;
         return p.item;
     }
-//    public T getRecursive(int index) {
-//        if(index == 0) return this.item;
-//        return this.next.get(index-1);
-//    }
+    public T getRecursive(int index) {
+        return first.get(index);
+    }
 }
