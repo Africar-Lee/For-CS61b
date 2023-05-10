@@ -57,8 +57,7 @@ public class LinkedListDeque<T> {
         if (other.isEmpty()) return;
         DLNode p2o = other.first;
         while (p2o != other.sentinel) {
-            DLNode temp = new DLNode(p2o);
-            this.addLast(temp.item);
+            this.addLast(p2o.item);
             p2o = p2o.next;
         }
         first = sentinel.next;
@@ -114,7 +113,6 @@ public class LinkedListDeque<T> {
     public T removeFirst() {
         if (this.isEmpty()) return null;
         T ret = first.item;
-        first.item = null;
 
         sentinel.next = first.next;
         first = first.next;
@@ -130,7 +128,6 @@ public class LinkedListDeque<T> {
     public T removeLast() {
         if (this.isEmpty()) return null;
         T ret = last.item;
-        last.item = null;
 
         sentinel.prev = last.prev;
         last = last.prev;
