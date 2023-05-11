@@ -120,7 +120,7 @@ public class LinkedListDeque<T> {
 
         size -= 1;
 
-        last = sentinel.next;
+        last = sentinel.prev;
 
         return ret;
     }
