@@ -17,7 +17,7 @@ public class ArrayDeque<T> {
     public ArrayDeque(ArrayDeque other) {
         int n = other.size();
         items = (T[]) new Object[n];
-        for(int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i) {
             items[i] = (T) other.get(i);
         }
         size = n;
@@ -33,7 +33,7 @@ public class ArrayDeque<T> {
 
     private void resize(int cap) {
         T[] a = (T[]) new Object[cap];
-        if(first <= last) {
+        if (first <= last) {
             System.arraycopy(items, first, a, 1, size);
         } else {
             System.arraycopy(items, first, a, 1, size - first + 1);
@@ -45,19 +45,19 @@ public class ArrayDeque<T> {
     }
 
     public void printDeque() {
-        if(this.isEmpty()) {
+        if (this.isEmpty()) {
             System.out.println();
             return;
         }
         System.out.print(items[first]);
-        for(int i = 1; i < size; ++i) {
+        for (int i = 1; i < size; ++i) {
             System.out.print(" " + items[(first + i) % max_size]);
         }
         System.out.println();
     }
 
     public void addFirst(T item) {
-        if(size == max_size) {
+        if (size == max_size) {
             max_size = 2 * max_size;
             this.resize(max_size);
         }
@@ -67,7 +67,7 @@ public class ArrayDeque<T> {
     }
 
     public void addLast(T item) {
-        if(size == max_size) {
+        if (size == max_size) {
             max_size = 2 * max_size;
             this.resize(max_size);
         }
@@ -77,7 +77,9 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
-        if(this.isEmpty()) {return null;}
+        if (this.isEmpty()) {
+            return null;
+        }
         T ret = items[first];
         first = (first + 1) % max_size;
         size -= 1;
@@ -85,7 +87,9 @@ public class ArrayDeque<T> {
     }
 
     public T removeLast() {
-        if(this.isEmpty()) {return null;}
+        if (this.isEmpty()) {
+            return null;
+        }
         last = (last - 1 + max_size) % max_size;
         T ret = items[last];
         size -= 1;
@@ -93,7 +97,9 @@ public class ArrayDeque<T> {
     }
 
     public T get(int index) {
-        if(index >= size || index < 0) {return null;}
+        if (index >= size || index < 0) {
+            return null;
+        }
         int i = (first + index) % max_size;
         return items[i];
     }
