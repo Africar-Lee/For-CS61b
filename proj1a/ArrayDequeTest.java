@@ -62,10 +62,16 @@ public class ArrayDequeTest {
         ad2.removeFirst();
         passed = checkEmpty(true, ad2.isEmpty()) && passed;
 
-        ad2.addFirst(1);
-        ad2.addLast(2);
-        ad2.addLast(3);
-        ad2.removeFirst();
+		for(int i = 0; i < 9; ++i) {
+			ad2.addLast(i);
+		}
+		for(int i = 0; i < 3; ++i) {
+			ad2.removeFirst();
+		}
+
+        for(int i = 0; i < 33; ++i) {
+			ad2.addLast(i);
+		}
         System.out.println("Print out deque: ");
         ad2.printDeque();
 

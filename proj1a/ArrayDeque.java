@@ -9,8 +9,8 @@ public class ArrayDeque<T> {
 
     public ArrayDeque() {
         items = (T[]) new Object[max_size];
-        first = 1;
-        last = 1;
+        first = 0;
+        last = 0;
         size = 0;
     }
 
@@ -33,15 +33,15 @@ public class ArrayDeque<T> {
 
     private void resize(int cap) {
         T[] a = (T[]) new Object[cap];
-        if (first <= last) {
-            System.arraycopy(items, first, a, 1, size);
+        if (first < last) {
+            System.arraycopy(items, first, a, 0, size);
         } else {
-            System.arraycopy(items, first, a, 1, size - first + 1);
-            System.arraycopy(items, 0, a, size - first + 2, last + 1);
+            System.arraycopy(items, first, a, 0, size - first);
+            System.arraycopy(items, 0, a, size - first, last);
         }
         items = a;
-        first = 1;
-        last = size + 1;
+        first = 0;
+        last = size;
     }
 
     public void printDeque() {
