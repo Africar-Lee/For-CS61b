@@ -1,8 +1,8 @@
 public class LinkedListDeque<T> {
     private class DLNode {
-        public T item;
-        public DLNode prev;
-        public DLNode next;
+        private T item;
+        private DLNode prev;
+        private DLNode next;
 
         public DLNode() {
             item = null;
@@ -23,7 +23,7 @@ public class LinkedListDeque<T> {
         }
 
         public T get(int index) {
-            if (index == 0) return item;
+            if (index == 0) {return item;}
             return this.next.get(index - 1);
         }
     }
@@ -54,7 +54,7 @@ public class LinkedListDeque<T> {
         first = sentinel;
         last = sentinel;
         size = 0;
-        if (other.isEmpty()) return;
+        if (other.isEmpty()) {return;}
         DLNode p2o = other.first;
         while (p2o != other.sentinel) {
             this.addLast(p2o.item);
@@ -66,7 +66,7 @@ public class LinkedListDeque<T> {
     }
 
     public boolean isEmpty() {
-        if (size == 0) return true;
+        if (size == 0) {return true;}
         return false;
     }
 
@@ -111,7 +111,7 @@ public class LinkedListDeque<T> {
     }
 
     public T removeFirst() {
-        if (this.isEmpty()) return null;
+        if (this.isEmpty()) {return null;}
         T ret = first.item;
 
         sentinel.next = first.next;
@@ -126,7 +126,7 @@ public class LinkedListDeque<T> {
     }
 
     public T removeLast() {
-        if (this.isEmpty()) return null;
+        if (this.isEmpty()) {return null;}
         T ret = last.item;
 
         sentinel.prev = last.prev;
@@ -147,7 +147,7 @@ public class LinkedListDeque<T> {
         for (int i = 0; i <= index; ++i) {
             p = p.next;
         }
-        if (p == sentinel) return null;
+        if (p == sentinel) {return null;}
         return p.item;
     }
     public T getRecursive(int index) {

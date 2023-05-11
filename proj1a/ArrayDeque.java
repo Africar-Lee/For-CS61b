@@ -1,133 +1,26 @@
+import org.junit.runner.notification.StoppedByUserException;
+
 public class ArrayDeque<T> {
-    private final class AList<T> {
-        public T[] items;
-        public int head;
-        public int tail;
-        public int size;
-        public int max_size = 8;
-
-        /**
-         * create an empty list.
-         */
-        public AList() {
-            items = (T[]) new Object[max_size];
-            tail = 0;
-            head = 1;
-            size = 0;
-        }
-
-        /**
-         * resize the underlying array to the target capacity.
-         */
-        private void resize(int capacity) {
-            T[] a = (T[]) new Object[capacity];
-            if (head < tail) {
-                System.arraycopy(items, head, a, 0, size);
-            } else {
-                System.arraycopy(items, head, a, 0, size - head);
-                System.arraycopy(items, 0, a, size - head, tail + 1);
-            }
-            items = a;
-            head = 0;
-            tail = size - 1;
-        }
-
-        /**
-         * Inserts X into the back of the list.
-         */
-        public void addLast(T x) {
-            if (size == max_size) {
-                resize(size * 2);
-                max_size = size * 2;
-            }
-            tail = (tail + 1) % max_size;
-            items[tail] = x;
-            size += 1;
-        }
-
-        public void addFirst(T x) {
-            if (size == max_size) {
-                max_size = max_size * 2;
-                resize(max_size);
-            }
-            head = ((head + max_size - 1) % max_size);
-            items[head] = x;
-            size += 1;
-        }
-
-        /**
-         * Get the last item of the list.
-         */
-        public T getLast() {
-            return items[tail];
-        }
-
-        public T getFirst() {
-            return items[head];
-        }
-
-        /**
-         * Get the 'index'th item of the list.
-         */
-        public T get(int index) {
-            return items[(head + index) % max_size];
-        }
-
-        /**
-         * Return the size of Alist.
-         */
-        public int size() {
-            return size;
-        }
-
-        /**
-         * Remove the last item of the list.
-         */
-        public T removeLast() {
-            T x = items[tail];
-            items[tail] = null;
-            size -= 1;
-            tail = ((tail + max_size - 1) % max_size);
-            return x;
-        }
-
-        public T removeFirst() {
-            T x = items[head];
-            items[head] = null;
-            size -= 1;
-            head = ((head + 1) % max_size);
-            return x;
-        }
-
-        public void printOutAList() {
-            for (int i = 0; i < size; ++i) {
-                System.out.print(items[((i + head) % max_size)] + " ");
-            }
-            System.out.println();
-        }
-    }
-
-    private AList sentinel;
+    private T[] items;
+    private int first;
+    private int last;
     private int size;
+    private int max_size = 8;
 
-    /**
-     * create an empty ArrayDeque.
-     */
     public ArrayDeque() {
-        sentinel = new AList();
-        size = sentinel.size;
+        items = (T[]) new Object[max_size];
+        first = 1;
+        last = 1;
+        size = 0;
     }
 
-    /**
-     * create an AD from another AD.
-     */
     public ArrayDeque(ArrayDeque other) {
-        sentinel = new AList();
-        sentinel.resize(other.sentinel.max_size);
-        size = other.size;
-        System.arraycopy(other.sentinel.items, 0, sentinel.items, 0, size);
-        sentinel.head = other.sentinel.head;
-        sentinel.tail = other.sentinel.tail;
+        int n = other.size();
+        items = (T[]) new Object[n];
+        for(int i = 0; i < n; ++i) {
+            items[i] = (T) other.get(i);
+        }
+        size = n;
     }
 
     public boolean isEmpty() {
@@ -138,42 +31,78 @@ public class ArrayDeque<T> {
         return size;
     }
 
-    /**
-     * Add item to AD head.
-     */
-    public void addFirst(T it) {
-        sentinel.addFirst(it);
-        size += 1;
-    }
-
-    public void addLast(T it) {
-        sentinel.addLast(it);
-        size += 1;
-    }
-
-    public T getFirst() {
-        return (T) sentinel.getFirst();
-    }
-
-    public T getLast() {
-        return (T) sentinel.getLast();
-    }
-
-    public T get(int index) {
-        return (T) sentinel.get(index);
-    }
-
-    public T removeFirst() {
-        size -= 1;
-        return (T) sentinel.removeFirst();
-    }
-
-    public T removeLast() {
-        size -= 1;
-        return (T) sentinel.removeLast();
+    private void resize(int cap) {
+        T[] a = (T[]) new Object[cap];
+        if(first <= last) {
+            System.arraycopy(items, first, a, 1, size);
+        } else {
+            System.arraycopy(items, first, a, 1, size - first + 1);
+            System.arraycopy(items, 0, a, size - first + 2, last + 1);
+        }
+        items = a;
+        first = 1;
+        last = size + 1;
     }
 
     public void printDeque() {
-        sentinel.printOutAList();
+        if(this.isEmpty()) {
+            System.out.println();
+            return;
+        }
+        System.out.print(items[first]);
+        for(int i = 1; i < size; ++i) {
+            System.out.print(" " + items[(first + i) % max_size]);
+        }
+        System.out.println();
+    }
+
+    public void addFirst(T item) {
+        if(size == max_size) {
+            max_size = 2 * max_size;
+            this.resize(max_size);
+        }
+        first = (first - 1 + max_size) % max_size;
+        items[first] = item;
+        size += 1;
+    }
+
+    public void addLast(T item) {
+        if(size == max_size) {
+            max_size = 2 * max_size;
+            this.resize(max_size);
+        }
+        items[last] = item;
+        last = (last + 1) % max_size;
+        size += 1;
+    }
+
+    public T removeFirst() {
+        if(this.isEmpty()) {return null;}
+        T ret = items[first];
+        first = (first + 1) % max_size;
+        size -= 1;
+        return ret;
+    }
+
+    public T removeLast() {
+        if(this.isEmpty()) {return null;}
+        last = (last - 1 + max_size) % max_size;
+        T ret = items[last];
+        size -= 1;
+        return ret;
+    }
+
+    public T get(int index) {
+        if(index >= size || index < 0) {return null;}
+        int i = (first + index) % max_size;
+        return items[i];
+    }
+
+    private T getFirst() {
+        return items[first];
+    }
+
+    private T getLast() {
+        return items[last - 1];
     }
 }
